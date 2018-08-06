@@ -38,7 +38,7 @@
             .attr("class", "node")
             .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-        node.append("circle")
+        var circle = node.append("circle")
             .attr("id", function(d) { return d.id; })
             .attr("r", function(d) { return d.r; })
             .style("fill", function(d) { return color(d.package); });
@@ -59,6 +59,45 @@
 
         node.append("title")
             .text(function(d) { return d.id + "\n" + format(d.value); });
+
+        //　***********************  ここから書き換え　*************************** //
+
+        // バブルのサイズ変更を連続的に行う関数を呼び出し
+        repeat();
+
+        function repeat() {
+            // ツリーの重みを計算する関数を更新
+            root.sum(function (d) {
+                    d.value = d.value + (Math.random() - 0.5) * 10000;
+                    return d.value;
+                });
+
+            // nodeの情報を上書き
+            svg.selectAll(".node")
+                .data(pack(root).leaves());
+
+            // 半径を5秒かけて更新
+            circle
+                .transition()
+                .duration(5000)
+                .attr("r", function(d) { return d.r; });
+
+            var transitions = 0;
+            // 位置を5秒かけて更新
+            node
+                .transition()
+                .duration(5000)
+                .attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                }).on("start", function() {
+                    transitions++;
+                }).on("end", function() {
+                    if( --transitions === 0 ) {
+                        // すべての位置変更が終わったら次の変更を呼び出し
+                        repeat();
+                    }
+                });
+        }
     });
 
 </script>
