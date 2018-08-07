@@ -51,17 +51,18 @@ Tetsuya Odaira
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-    e = document.getElementById("bubble");
-    var width = e.clientWidth;
-    var height = e.clientHeight;
     var svg = d3.select("svg");
 
     var color = d3.scaleOrdinal(d3.schemeCategory20);
 
+    e = document.getElementById("bubble");
+    var width = e.clientWidth;
+    var height = e.clientHeight;
     var pack = d3.pack()
         .size([width, height])
         .padding(1.5);
 
+    svg.classed("svg-content-responsive", true);
     d3.csv("skills.csv", function(d) {
         d["values"] = [+d.v1, +d.v2, +d.v3, +d.v4];
         return d
@@ -110,6 +111,13 @@ Tetsuya Odaira
         repeat(0);
 
         function repeat(index) {
+            e = document.getElementById("bubble");
+            width = e.clientWidth;
+            height = e.clientHeight;
+            pack = d3.pack()
+                .size([width, height])
+                .padding(1.5);
+
             console.info(index)
             root.sum(function (d) {
                 if (d.values) {
