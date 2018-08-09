@@ -21,13 +21,13 @@
             #nameBack{
                 background-color: #000000d0;
                 width: 100vw;
-                height: 1.5em;
+                height: 1.8em;
                 position: absolute;
             }
             #myName{
                 color: #f0f8ff;
                 font-family: 'Sunflower', sans-serif;
-                font-size: 0.8em;
+                font-size: 1em;
                 position: absolute;
             }
             #bubble{
@@ -98,12 +98,11 @@
 
         node.append("text")
             .attr("clip-path", function(d) { return "url(#clip-" + d.id + ")"; })
-            .selectAll("tspan")
-            .data(function(d) { return [d.id]; })
-            .enter().append("tspan")
+            .append("tspan")
             .attr("x", 0)
-            .attr("y", function(d, i, nodes) { return 13 + (i - nodes.length / 2 - 0.5) * 10; })
-            .text(function(d) { return d; });
+            .attr("y", 3)
+            .attr("font-size", 13)
+            .text(function(d) { return d.id; });
 
         node.append("title")
             .text(function(d) { return d.id; });
